@@ -1,0 +1,19 @@
+{
+  "users": [
+
+    {
+      "id": 1,
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "phone": "+91 98765 43211",
+      "dob": "1992-08-22",
+      "address": "456 Oak Street, Mumbai, MH 400001",
+      "aadhar": "2345 6789 0123",
+      "pan": "BCDEF2345G",
+      "accountNumber": "SC123456790",
+      "customerSince": "2021-03-10",
+      "kycStatus": "Completed",
+      "creditScore": 720
+    }
+  ]
+}

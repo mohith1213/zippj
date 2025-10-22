@@ -1,0 +1,312 @@
+{
+  "applications": [
+    {
+      "id": "LA2025001",
+      "customerName": "Rajesh Kumar Sharma",
+      "email": "rajesh.sharma@email.com",
+      "phone": "9876543210",
+      "age": 40,
+      "status": "pending",
+      "loanType": "Personal Loan",
+      "loanAmount": 500000,
+      "personalDetails": {
+        "firstName": "Rajesh",
+        "middleName": "Kumar",
+        "lastName": "Sharma",
+        "dateOfBirth": "15/05/1985",
+        "gender": "Male",
+        "maritalStatus": "Married",
+        "aadharNumber": "1234-5678-9012",
+        "panNumber": "ABCDE1234F",
+        "passportNumber": "A1234567",
+        "fatherName": "Mohan Sharma",
+        "highestQualification": "MBA",
+        "homeAddress": "123, MG Road, Bangalore, Karnataka - 560001"
+      },
+      "employmentDetails": {
+        "occupationType": "Salaried",
+        "employer": "Tech Solutions Pvt Ltd",
+        "designation": "Senior Manager",
+        "totalWorkExperience": "12 years",
+        "officeAddress": "456, IT Park, Bangalore, Karnataka - 560002"
+      },
+      "loanDetails": {
+        "loanType": "Personal Loan",
+        "loanAmount": 500000,
+        "loanDuration": "36 months",
+        "cibilScore": 750
+      },
+      "existingLoanDetails": {
+        "loanType": "Home Loan",
+        "lender": "HDFC Bank",
+        "outstandingAmount": 1500000,
+        "emi": 25000,
+        "tenureRemaining": "5 years"
+      },
+      "documents": {
+        "photograph": {
+          "name": "rajesh_passport_photo.jpg",
+          "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+          "type": "image",
+          "uploaded": true
+        },
+        "idProof": {
+          "name": "rajesh_aadhar_card.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "incomeProof": {
+          "name": "tech_solutions_salary_certificate.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "paySlip": {
+          "name": "payslip_january_2025.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "cibilReport": {
+          "name": "rajesh_cibil_score_report.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "employmentProof": {
+          "name": "tech_solutions_offer_letter.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "homeEc": {
+          "name": "mg_road_rental_agreement.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "vehicleInvoice": {
+          "name": "honda_city_invoice_2023.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        }
+      },
+      "makerComments": [
+        {
+          "id": 1,
+          "maker": "John Smith",
+          "comment": "Income verification required. Please provide latest salary certificate.",
+          "timestamp": "2025-01-15 10:30 AM",
+          "type": "info"
+        },
+        {
+          "id": 2,
+          "maker": "Sarah Johnson",
+          "comment": "Documents verified successfully. CIBIL score is good.",
+          "timestamp": "2025-01-14 2:20 PM",
+          "type": "success"
+        }
+      ]
+    },
+    {
+      "id": "LA2025002",
+      "customerName": "Priya Singh",
+      "email": "priya.singh@email.com",
+      "phone": "9876543211",
+      "age": 35,
+      "status": "pending",
+      "loanType": "Home Loan",
+      "loanAmount": 2500000,
+      "personalDetails": {
+        "firstName": "Priya",
+        "middleName": "",
+        "lastName": "Singh",
+        "dateOfBirth": "20/08/1989",
+        "gender": "Female",
+        "maritalStatus": "Single",
+        "aadharNumber": "2345-6789-0123",
+        "panNumber": "BCDEF2345G",
+        "passportNumber": "",
+        "fatherName": "Rajesh Singh",
+        "highestQualification": "B.Tech",
+        "homeAddress": "789, Park Street, Mumbai, Maharashtra - 400001"
+      },
+      "employmentDetails": {
+        "occupationType": "Salaried",
+        "employer": "Software Corp Ltd",
+        "designation": "Tech Lead",
+        "totalWorkExperience": "8 years",
+        "officeAddress": "321, Tech Hub, Mumbai, Maharashtra - 400002"
+      },
+      "loanDetails": {
+        "loanType": "Home Loan",
+        "loanAmount": 2500000,
+        "loanDuration": "20 years",
+        "cibilScore": 720
+      },
+      "existingLoanDetails": {
+        "loanType": "Personal Loan",
+        "lender": "ICICI Bank",
+        "outstandingAmount": 200000,
+        "emi": 8000,
+        "tenureRemaining": "2 years"
+      },
+      "documents": {
+        "photograph": {
+          "name": "priya_passport_photo.jpg",
+          "url": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+          "type": "image",
+          "uploaded": true
+        },
+        "idProof": {
+          "name": "priya_aadhar_card.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "incomeProof": {
+          "name": "software_corp_salary_certificate.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "paySlip": {
+          "name": "payslip_january_2025.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "cibilReport": {
+          "name": "priya_cibil_score_report.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "employmentProof": {
+          "name": "software_corp_offer_letter.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "homeEc": {
+          "name": "park_street_rental_agreement.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "vehicleInvoice": {
+          "name": "maruti_swift_invoice_2022.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        }
+      },
+      "makerComments": []
+    },
+    {
+      "id": "LA2025003",
+      "customerName": "Amit Patel",
+      "email": "amit.patel@email.com",
+      "phone": "9876543212",
+      "age": 28,
+      "status": "approved",
+      "loanType": "Personal Loan",
+      "loanAmount": 300000,
+      "personalDetails": {
+        "firstName": "Amit",
+        "middleName": "Kumar",
+        "lastName": "Patel",
+        "dateOfBirth": "10/12/1996",
+        "gender": "Male",
+        "maritalStatus": "Single",
+        "aadharNumber": "3456-7890-1234",
+        "panNumber": "CDEFG3456H",
+        "passportNumber": "B2345678",
+        "fatherName": "Ramesh Patel",
+        "highestQualification": "B.E",
+        "homeAddress": "456, Gandhi Road, Delhi, Delhi - 110001"
+      },
+      "employmentDetails": {
+        "occupationType": "Salaried",
+        "employer": "Digital Solutions Inc",
+        "designation": "Software Engineer",
+        "totalWorkExperience": "3 years",
+        "officeAddress": "789, Cyber City, Delhi, Delhi - 110002"
+      },
+      "loanDetails": {
+        "loanType": "Personal Loan",
+        "loanAmount": 300000,
+        "loanDuration": "24 months",
+        "cibilScore": 780
+      },
+      "existingLoanDetails": {
+        "loanType": "Education Loan",
+        "lender": "SBI Bank",
+        "outstandingAmount": 100000,
+        "emi": 5000,
+        "tenureRemaining": "1 year"
+      },
+      "documents": {
+        "photograph": {
+          "name": "amit_passport_photo.jpg",
+          "url": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+          "type": "image",
+          "uploaded": true
+        },
+        "idProof": {
+          "name": "amit_aadhar_card.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "incomeProof": {
+          "name": "digital_solutions_salary_certificate.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "paySlip": {
+          "name": "payslip_january_2025.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "cibilReport": {
+          "name": "amit_cibil_score_report.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "employmentProof": {
+          "name": "digital_solutions_offer_letter.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "homeEc": {
+          "name": "gandhi_road_rental_agreement.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        },
+        "vehicleInvoice": {
+          "name": "tata_nexon_invoice_2024.pdf",
+          "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+          "type": "pdf",
+          "uploaded": true
+        }
+      },
+      "makerComments": [
+        {
+          "id": 3,
+          "maker": "David Wilson",
+          "comment": "All documents verified. Application approved.",
+          "timestamp": "2025-01-16 11:45 AM",
+          "type": "success"
+        }
+      ]
+    }
+  ]
+}

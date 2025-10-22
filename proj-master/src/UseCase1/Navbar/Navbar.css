@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.home-page {
+  padding-top: 80px; /* Adjust depending on navbar height */
+}
+
+/* Optional: smooth transition when resizing */
+.navbar {
+  transition: all 0.3s ease-in-out;
+}

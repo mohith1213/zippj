@@ -1,0 +1,75 @@
+.comments-section {
+  background: #ffffff;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.comments-section h3 {
+  color: #003366;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.comments-input label {
+  display: block;
+  font-size: 14px;
+  color: #003366;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.comments-input textarea {
+  width: 100%;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.comments-input textarea:focus {
+  border-color: #00a65a;
+  box-shadow: 0 0 4px rgba(0, 166, 90, 0.25);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-approve,
+.btn-reject {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.btn-approve {
+  background-color: #00a65a;
+  color: #ffffff;
+}
+
+.btn-approve:hover {
+  background-color: #009555;
+}
+
+.btn-reject {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.btn-reject:hover {
+  background-color: #c0392b;
+}

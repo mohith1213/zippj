@@ -1,0 +1,204 @@
+/* ===========================
+   APPLICATION TILE (Standard Chartered Style)
+=========================== */
+
+.application-tile {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.application-tile:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+/* ===== Header ===== */
+.tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.tile-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #003366; /* SCB navy blue */
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 4px 10px;
+  text-transform: capitalize;
+}
+
+/* ===== Status Colors ===== */
+.status.reading-review {
+  background-color: #fff8e6;
+  color: #b58105;
+}
+
+.status.with-checker {
+  background-color: #e6f2fa;
+  color: #0055a4;
+}
+
+.status.approved {
+  background-color: #e9fdf4;
+  color: #00a65a;
+}
+
+.status.rejected {
+  background-color: #fdeaea;
+  color: #c0392b;
+}
+
+/* ===== Details Section ===== */
+.tile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.detail-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* ===== CIBIL Score ===== */
+.score-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.score {
+  font-weight: 700;
+  font-size: 15px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.score.excellent {
+  background-color: #e6f9ef;
+  color: #00a65a;
+}
+
+.score.good {
+  background-color: #e6f2fa;
+  color: #0055a4;
+}
+
+.score.fair {
+  background-color: #fff4e6;
+  color: #b58105;
+}
+
+/* ===== Footer ===== */
+.tile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 10px;
+}
+
+.application-date {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.review-btn {
+  background-color: #0055a4;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.review-btn:hover {
+  background-color: #00a65a;
+  transform: translateX(2px);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .application-tile {
+    padding: 16px;
+  }
+
+  .tile-header h4 {
+    font-size: 16px;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tile-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .review-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .application-tile {
+    padding: 14px;
+  }
+
+  .tile-header h4 {
+    font-size: 15px;
+  }
+
+  .status {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+
+  .detail-value {
+    font-size: 13px;
+  }
+
+  .review-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
