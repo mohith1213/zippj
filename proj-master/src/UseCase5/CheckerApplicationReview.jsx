@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ModalPopup from "../components/ModalPopup";
 import { useParams, Link, useLocation } from "react-router-dom";
 import applicationsData from "./data/applications.json";
 import "./CheckerApplicationReview.css";
@@ -15,6 +16,7 @@ export default function CheckerApplicationReview() {
   const [commentError, setCommentError] = useState("");
   const [applicationData, setApplicationData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [infoModal, setInfoModal] = useState({ show: false, title: '', message: '' });
 
   useEffect(() => {
     // Load application data from localStorage or fallback to JSON data
@@ -48,7 +50,7 @@ export default function CheckerApplicationReview() {
       <div className="text-center py-5">
         <h4>Application Not Found</h4>
         <p className="text-muted">The requested application could not be found.</p>
-        <Link to="../dashboard" className="btn btn-primary">
+        <Link to="../dashboard" className="btn btn-primary-custom">
           Back to Dashboard
         </Link>
       </div>
@@ -110,7 +112,7 @@ export default function CheckerApplicationReview() {
     // Update local state
     setApplicationData(prev => ({ ...prev, status: action }));
 
-    alert(message);
+    setInfoModal({ show: true, title: confirmationType === "approve" ? "Approved" : "Rejected", message });
     setShowConfirmation(false);
     setRejectionComment("");
     setApprovalComment("");

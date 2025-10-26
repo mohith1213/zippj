@@ -45,31 +45,25 @@
   margin-top: 16px;
 }
 
-.btn-approve,
-.btn-reject {
-  padding: 8px 16px;
+/* Reusable custom button (padding, radius, hover lift) */
+.btn-custom {
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.25s ease;
-}
-
-.btn-approve {
-  background-color: #00a65a;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
   color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
-
-.btn-approve:hover {
-  background-color: #009555;
+.btn-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
 }
-
-.btn-reject {
-  background-color: #e74c3c;
-  color: #ffffff;
-}
-
-.btn-reject:hover {
-  background-color: #c0392b;
-}
+/* Green (approve) */
+.btn-custom--green { background: linear-gradient(135deg, #00a65a 0%, #009555 100%); }
+.btn-custom--green:hover { box-shadow: 0 5px 15px rgba(0, 166, 90, 0.35); }
+/* Red (reject) */
+.btn-custom--red { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+.btn-custom--red:hover { box-shadow: 0 5px 15px rgba(231, 76, 60, 0.35); }

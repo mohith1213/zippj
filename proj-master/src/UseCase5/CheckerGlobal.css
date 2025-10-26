@@ -20,6 +20,14 @@
 .app-shell {
   min-height: 100vh;
   background: #f8f9fa;
+  /* Hide scrollbar for app shell while preserving scroll */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.app-shell::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* Global Typography */
@@ -27,6 +35,15 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--sc-text);
   background: #f8f9fa;
+  /* Hide scrollbar on body (Firefox/IE/Edge legacy) */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar but keep scroll for body (WebKit) */
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* Global Button Styles */
@@ -59,6 +76,23 @@ body {
 .btn-outline-primary:hover {
   background: var(--sc-blue);
   border-color: var(--sc-blue);
+}
+
+/* Primary CTA button (checker theme) */
+.app-shell .btn-primary-custom {
+  background: linear-gradient(135deg, var(--sc-blue) 0%, var(--sc-deep) 100%);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+
+.app-shell .btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 163, 224, 0.35);
+  color: #ffffff;
 }
 
 .btn-outline-danger {

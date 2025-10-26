@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ModalPopup from "../components/ModalPopup";
 import "./UnifiedLoanApplication.css";
 
 // Move Field component OUTSIDE the main component
@@ -65,6 +66,7 @@ const Section = ({ title, children }) => (
 export default function UnifiedLoanApplication({ onSubmit, initialData }) {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [infoModal, setInfoModal] = useState({ show: false, title: '', message: '' });
   const [formData, setFormData] = useState({
     // Personal
     fullName: "",
@@ -409,7 +411,7 @@ export default function UnifiedLoanApplication({ onSubmit, initialData }) {
     if (typeof onSubmit === 'function') {
       onSubmit(newApp);
     } else {
-      alert('Application submitted successfully!');
+      setInfoModal({ show: true, title: 'Submission', message: 'Application submitted successfully!' });
     }
   };
 
@@ -733,6 +735,12 @@ export default function UnifiedLoanApplication({ onSubmit, initialData }) {
           </div>
         </form>
       </div>
+        <ModalPopup
+          show={infoModal.show}
+          title={infoModal.title}
+          message={infoModal.message}
+          onClose={() => setInfoModal({ ...infoModal, show: false })}
+        />
     </div>
   );
 }

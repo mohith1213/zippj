@@ -21,7 +21,7 @@
 
 /* Standard Chartered Logo */
 .sc-logo {
-  height: 72px !important; /* medium logo size for better visual balance */
+  height: 55px !important; /* standardized logo size */
   width: auto;
   object-fit: contain;
 }
@@ -38,16 +38,37 @@
 }
 
 .navbar-sc .nav-link:hover {
-  color: var(--sc-blue);
+  color: var(--sc-blue) !important;
   background: transparent !important;
 }
 
 .navbar-sc .nav-link.active {
-  color: var(--sc-blue);
+  color: var(--sc-blue) !important;
   background: transparent !important; /* remove tinted background */
   font-weight: 600;
-  border-bottom: 2px solid var(--sc-blue);
+  border-bottom: 2px solid var(--sc-blue) !important;
 }
+
+/* Ensure active state never turns green across any state variants */
+.navbar-sc .nav-link.active,
+.navbar-sc .nav-link.active:focus,
+.navbar-sc .nav-link.active:visited,
+.navbar-sc .nav-link.active:active {
+  color: var(--sc-blue) !important;
+  background: transparent !important;
+  border-bottom-color: var(--sc-blue) !important;
+  outline: none !important;
+  text-decoration: none;
+}
+
+/* Neutralize accidental success/green classes on active link */
+.navbar-sc .nav-link.active.text-success,
+.navbar-sc .nav-link.text-success.active {
+  color: var(--sc-blue) !important;
+}
+
+/* Icons inside active links inherit the same color */
+.navbar-sc .nav-link.active i { color: inherit !important; }
 
 /* Ensure no background appears on focus/active states */
 .navbar-sc .nav-link,
@@ -90,7 +111,7 @@
 }
 
 .nav-link:hover i.bi-bell {
-  color: var(--sc-green) !important;
+  color: var(--sc-blue) !important;
   transform: scale(1.05);
   background: none;
 }

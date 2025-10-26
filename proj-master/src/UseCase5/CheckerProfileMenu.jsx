@@ -1,18 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import ModalPopup from "../components/ModalPopup";
 
 export default function CheckerProfileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [logoutModal, setLogoutModal] = useState(false);
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
+  const handleLogout = () => setLogoutModal(true);
+  const confirmLogout = () => {
+    try {
       localStorage.removeItem('loanApplications');
       localStorage.removeItem('userProfile');
-      alert('Logged out successfully!');
-      setIsOpen(false);
-      navigate('/login', { replace: true });
-    }
+    } catch {}
+    setIsOpen(false);
+    setLogoutModal(false);
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -57,6 +60,16 @@ export default function CheckerProfileMenu() {
           onClick={() => setIsOpen(false)}
         ></div>
       )}
+      <ModalPopup
+        show={logoutModal}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        onClose={() => setLogoutModal(false)}
+        onConfirm={confirmLogout}
+        confirmText="Logout"
+        cancelText="Cancel"
+        confirmVariant="danger"
+      />
     </div>
   );
 }

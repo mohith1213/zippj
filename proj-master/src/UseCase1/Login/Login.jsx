@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScImage1 from '../Images/Sc-Image1.jpeg';
 import './Login.css';
+import ModalPopup from '../../components/ModalPopup';
 
 function Login() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ function Login() {
   const [role, setRole] = useState('customer');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [modal, setModal] = useState({ show: false, title: '', message: '' });
 
   // ====== Static password for demo ======
   const STATIC_PASSWORD = '1234';
@@ -20,18 +22,15 @@ function Login() {
 
     // 🔸 Basic Validation
     if (!username.trim() || !password.trim()) {
-      alert('⚠️ Please enter both username and password.');
+      setModal({ show: true, title: 'Login Error', message: 'Please enter both username and password.' });
       return;
     }
 
     // 🔸 Password Check
     if (password !== STATIC_PASSWORD) {
-      alert('❌ Incorrect password. Try again!');
+      setModal({ show: true, title: 'Incorrect Password', message: 'The password you entered is incorrect. Please try again.' });
       return;
     }
-
-    // 🔸 Success
-    alert(`✅ Login successful as ${role.toUpperCase()}!`);
 
     // 🔸 Navigate Based on Role
     switch (role) {
@@ -157,6 +156,12 @@ function Login() {
           />
         </div>
       </div>
+      <ModalPopup
+        show={modal.show}
+        title={modal.title}
+        message={modal.message}
+        onClose={() => setModal({ ...modal, show: false })}
+      />
     </div>
   );
 }

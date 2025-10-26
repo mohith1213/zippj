@@ -6,13 +6,15 @@ import StanLogo from "../Images/STAN.L.png"; // ✅ Import your local logo
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-      <div className="container">
+      <div className="container-fluid">
         {/* ===== Logo Section ===== */}
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+        <Link className="navbar-brand d-flex align-items-center p-0" to="/">
           <img
             src={StanLogo}
             alt="Standard Chartered"
-            height="45"
+            width="200"
+            height="55"
+            style={{ objectFit: 'contain', display: 'block' }}
             className="me-2 logo-img"
           />
           <span className="fw-bold text-primary bank-name"></span>
@@ -59,3 +61,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

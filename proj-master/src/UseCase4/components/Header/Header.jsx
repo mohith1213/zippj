@@ -18,6 +18,7 @@ const Header = ({
 }) => {
   return (
     <header className="header">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
       <div className="header-left">
         <button 
           className="menu-toggle"
@@ -36,13 +37,15 @@ const Header = ({
       <div className="user-info">
         <div className="notification-menu">
           <button 
-            className="notification-btn"
+            className="notification-btn notif-btn"
             onClick={() => setNotificationOpen(!notificationOpen)}
+            aria-label="Notifications"
+            title="Notifications"
           >
-            🔔
-            {unreadNotificationsCount > 0 && (
-              <span className="notification-count">{unreadNotificationsCount}</span>
-            )}
+            <i className="bi bi-bell fs-5 bell"></i>
+            {unreadNotificationsCount > 0 ? (
+              <span className="notif-badge" aria-label={`${unreadNotificationsCount} unread`}></span>
+            ) : null}
           </button>
           {notificationOpen && (
             <div className="notification-dropdown">
@@ -111,6 +114,7 @@ const Header = ({
             </div>
           )}
         </div>
+      </div>
       </div>
     </header>
   );

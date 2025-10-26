@@ -50,6 +50,22 @@
 /* Buttons piggyback on Bootstrap but add small tweaks */
 .btn { border-radius: 8px; font-weight: 500; }
 
+/* Custom primary button matching UC3 blue theme */
+.uc3-app .btn-primary-custom { 
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+.uc3-app .btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13,110,253,0.35);
+  color: #ffffff;
+}
+
 /* Responsiveness */
 @media (max-width: 992px) {
   .grid-2 { grid-template-columns: 1fr; }

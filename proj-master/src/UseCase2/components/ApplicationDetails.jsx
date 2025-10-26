@@ -1,11 +1,17 @@
 import React from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import '../styles/customer.base.css';
+import '../styles/application.details.css';
 
 const ApplicationDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const application = location.state?.application;
+
+  // Prefer data captured by UnifiedLoanApplication (UseCase3)
+  const fd = application?.formData && typeof application.formData === 'object'
+    ? application.formData
+    : application;
 
   if (!application) {
     return (
@@ -70,29 +76,29 @@ const ApplicationDetails = () => {
     <div className="dashboard-container">
       <div className="container-fluid">
         <div className="row justify-content-center">
-          <div className="col-lg-10">
+          <div className="col-12 details-page">
             <button className="btn btn-back mb-4" onClick={() => navigate('/customer-dashboard/applications')}>
               <i className="bi bi-arrow-left me-2"></i>Back to Applications
             </button>
 
-            {/* header */}
-            <div className="card card-custom mb-4">
+            {/* Header */}
+            <div className="card card-custom mb-4 details-header">
               <div className="card-body">
                 <div className="row align-items-center">
                   <div className="col-md-8">
-                    <h2 className="mb-2">{application.loanType}</h2>
-                    <p className="text-muted mb-3">Application ID: #{application.id}</p>
+                    <h2 className="mb-1">{application.loanType || fd?.loanType || 'Loan Application'}</h2>
+                    <p className="text-muted mb-2">Application ID: #{application.id}</p>
                     <span className={`status-badge ${getStatusBadgeClass(application.status)}`}>
                       {application.status}
                     </span>
                   </div>
                   <div className="col-md-4 text-md-end mt-3 mt-md-0">
-                    <div className="d-flex flex-column gap-2 align-items-md-end">
-                      <button className="btn btn-outline-primary btn-sm" onClick={() => navigate('/customer-dashboard/no-feature')}>
+                    <div className="details-header-actions">
+                      <button className="btn btn-outline-primary details-header-action" onClick={() => navigate('/customer-dashboard/no-feature')}>
                         <i className="bi bi-download me-1"></i>Download PDF
                       </button>
                       {application.status.toLowerCase() === 'rejected' && (
-                        <button className="btn btn-warning btn-sm" onClick={handleEditClick}>
+                        <button className="btn btn-warning details-header-action" onClick={handleEditClick}>
                           <i className="bi bi-pencil-square me-1"></i>Edit & Resubmit
                         </button>
                       )}
@@ -102,135 +108,120 @@ const ApplicationDetails = () => {
               </div>
             </div>
 
-            <div className="row">
-              {/* loan */}
-              <div className="col-lg-6 mb-4">
-                <div className="card card-custom h-100">
+            <div className="row gx-5 gy-4 details-grid">
+              {/* Personal Info */}
+              <div className="col-lg-6">
+                <div className="card card-custom h-100 details-section">
                   <div className="card-body">
-                    <h5 className="card-title mb-4">
-                      <i className="bi bi-cash-coin text-primary me-2"></i>
-                      Loan Details
-                    </h5>
-                    <div className="row">
-                      <div className="col-6">
-                        <div className="profile-field">
-                          <div className="profile-label">Loan Type</div>
-                          <div className="profile-value">{application.loanType}</div>
-                        </div>
-                        <div className="profile-field">
-                          <div className="profile-label">Loan Amount</div>
-                          <div className="profile-value text-primary fw-bold">
-                            {formatCurrency(application.amount)}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="profile-field">
-                          <div className="profile-label">Tenure</div>
-                          <div className="profile-value">{application.tenure} months</div>
-                        </div>
-                        <div className="profile-field">
-                          <div className="profile-label">Estimated EMI</div>
-                          <div className="profile-value text-success fw-bold">
-                            {formatCurrency(calculateEMI(application.amount, application.tenure))}
-                          </div>
-                        </div>
-                      </div>
+                    <h5 className="card-title mb-3"><i className="bi bi-person text-info me-2"></i>Personal Information</h5>
+                    <div className="row row-cols-1 row-cols-md-2 g-3">
+                      <div className="col"><div className="profile-label">Full Name</div><div className="profile-value">{fd?.fullName || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Phone</div><div className="profile-value">{fd?.phone || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Email</div><div className="profile-value">{fd?.email || '-'}</div></div>
+                      <div className="col"><div className="profile-label">DOB</div><div className="profile-value">{fd?.dob || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Age</div><div className="profile-value">{fd?.age || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Gender</div><div className="profile-value">{fd?.gender || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Marital Status</div><div className="profile-value">{fd?.maritalStatus || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Aadhar Number</div><div className="profile-value">{fd?.aadharNumber || '-'}</div></div>
+                      <div className="col"><div className="profile-label">PAN Number</div><div className="profile-value">{fd?.panNumber || '-'}</div></div>
+                      <div className="col-12"><div className="profile-label">Address</div><div className="profile-value">{fd?.address || '-'}</div></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* personal */}
-              <div className="col-lg-6 mb-4">
-                <div className="card card-custom h-100">
+              {/* Loan Details */}
+              <div className="col-lg-6">
+                <div className="card card-custom h-100 details-section">
                   <div className="card-body">
-                    <h5 className="card-title mb-4">
-                      <i className="bi bi-person text-info me-2"></i>
-                      Personal & Financial Details
-                    </h5>
-                    <div className="profile-field">
-                      <div className="profile-label">Monthly Income</div>
-                      <div className="profile-value">{formatCurrency(application.monthlyIncome)}</div>
-                    </div>
-                    <div className="profile-field">
-                      <div className="profile-label">Employment Type</div>
-                      <div className="profile-value">{application.employmentType}</div>
-                    </div>
-                    <div className="profile-field">
-                      <div className="profile-label">Purpose of Loan</div>
-                      <div className="profile-value">{application.purpose}</div>
+                    <h5 className="card-title mb-3"><i className="bi bi-cash-coin text-primary me-2"></i>Loan Details</h5>
+                    <div className="row row-cols-1 row-cols-md-2 g-3">
+                      <div className="col"><div className="profile-label">Loan Type</div><div className="profile-value">{fd?.loanType || application.loanType || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Loan Amount</div><div className="profile-value text-primary fw-semibold">{formatCurrency(Number(fd?.amount ?? application.amount ?? 0))}</div></div>
+                      <div className="col"><div className="profile-label">Tenure (months)</div><div className="profile-value">{fd?.duration || application.tenure || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Estimated EMI</div><div className="profile-value text-success fw-semibold">{formatCurrency(calculateEMI(Number(fd?.amount ?? application.amount ?? 0), Number(fd?.duration ?? application.tenure ?? 0)))}</div></div>
+                      <div className="col"><div className="profile-label">Employment Type</div><div className="profile-value">{fd?.occupationType || application.employmentType || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Employer/Business</div><div className="profile-value">{fd?.employer || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Designation/Role</div><div className="profile-value">{fd?.designation || '-'}</div></div>
+                      <div className="col"><div className="profile-label">Experience (years)</div><div className="profile-value">{fd?.totalExperience || '-'}</div></div>
+                      <div className="col-12"><div className="profile-label">Office/Business Address</div><div className="profile-value">{fd?.officeAddress || '-'}</div></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* status */}
-              <div className="col-lg-6 mb-4">
-                <div className="card card-custom h-100">
+              {/* Existing Loans (conditional) */}
+              {(fd?.hasLoans === 'Yes') && (
+                <div className="col-12">
+                  <div className="card card-custom details-section">
+                    <div className="card-body">
+                      <h5 className="card-title mb-3"><i className="bi bi-journal-text text-secondary me-2"></i>Existing Loan Details</h5>
+                      <div className="row row-cols-1 row-cols-md-3 g-3">
+                        <div className="col"><div className="profile-label">Loan Type</div><div className="profile-value">{fd?.existingLoanType || '-'}</div></div>
+                        <div className="col"><div className="profile-label">Lender</div><div className="profile-value">{fd?.existingLender || '-'}</div></div>
+                        <div className="col"><div className="profile-label">Outstanding Amount</div><div className="profile-value">{fd?.outstandingAmount || '-'}</div></div>
+                        <div className="col"><div className="profile-label">Monthly EMI</div><div className="profile-value">{fd?.existingEmi || '-'}</div></div>
+                        <div className="col"><div className="profile-label">Tenure Remaining</div><div className="profile-value">{fd?.tenureRemaining || '-'}</div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Documents Uploaded (from UseCase3 fields presence) */}
+              <div className="col-12">
+                <div className="card card-custom details-section details-docs">
                   <div className="card-body">
-                    <h5 className="card-title mb-4">
-                      <i className="bi bi-info-circle text-warning me-2"></i>
-                      Application Status & Remarks
-                    </h5>
-                    <div className="profile-field">
-                      <div className="profile-label">Current Status</div>
-                      <div className="profile-value">
-                        <span className={`status-badge ${getStatusBadgeClass(application.status)}`}>
-                          {application.status}
-                        </span>
-                      </div>
+                    <h5 className="card-title mb-3"><i className="bi bi-file-earmark-text text-success me-2"></i>Documents Uploaded</h5>
+                    <div className="docs-grid">
+                      {[
+                        { key: 'photograph', label: 'Photograph' },
+                        { key: 'idProof', label: 'ID Proof' },
+                        { key: 'addressProof', label: 'Address Proof' },
+                        { key: 'cibilReport', label: 'CIBIL Report' },
+                        { key: 'salariedPayslip', label: 'Payslip (Salaried)' },
+                        { key: 'salariedEmploymentProof', label: 'Employment Proof (Salaried)' },
+                        { key: 'salariedItr', label: 'ITR (Salaried)' },
+                        { key: 'selfItr', label: 'ITR (Self-Employed)' },
+                        { key: 'selfGst', label: 'GST Registration (Self-Employed)' },
+                        { key: 'selfBankStatements', label: 'Bank Statements (Self-Employed)' },
+                        { key: 'homeEc', label: 'Encumbrance Certificate (Home Loan)' },
+                        { key: 'homeSaleAgreements', label: 'Sale Agreements (Home Loan)' },
+                        { key: 'vehicleInvoice', label: 'Vehicle Invoice (Vehicle Loan)' },
+                        { key: 'vehicleQuotation', label: 'Vehicle Quotation (Vehicle Loan)' },
+                      ].map(({ key, label }) => (
+                        <div key={key} className="doc-item">
+                          <i className={`bi ${fd?.[key] ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-muted'}`}></i>
+                          <span className="doc-label">{label}</span>
+                          <span className={`doc-status ${fd?.[key] ? 'ok' : 'missing'}`}>{fd?.[key] ? 'Uploaded' : 'Not provided'}</span>
+                        </div>
+                      ))}
                     </div>
-                    <div className="profile-field">
-                      <div className="profile-label">Applied Date</div>
-                      <div className="profile-value">{application.appliedDate}</div>
-                    </div>
-                    <div className="profile-field">
-                      <div className="profile-label">Remarks</div>
-                      <div className={`profile-value ${application.status.toLowerCase() === 'rejected' ? 'text-danger' : 'text-muted'}`}>
-                        {application.remarks || 'No remarks available'}
-                      </div>
-                    </div>
-                    {/* Assigned Officer removed as requested */}
                   </div>
                 </div>
               </div>
 
-              {/* documents */}
-              <div className="col-lg-6 mb-4">
-                <div className="card card-custom h-100">
+              {/* Status & Remarks */}
+              <div className="col-12">
+                <div className="card card-custom details-section">
                   <div className="card-body">
-                    <h5 className="card-title mb-4">
-                      <i className="bi bi-file-earmark-text text-success me-2"></i>
-                      Uploaded Documents
-                    </h5>
-                    {application.documents && application.documents.length > 0 ? (
-                      <div className="list-group list-group-flush">
-                        {application.documents.map((doc, index) => (
-                          <div key={index} className="list-group-item px-0 py-3 border-0 border-bottom">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <div className="d-flex align-items-center">
-                                <i className="bi bi-filetype-pdf text-danger me-3"></i>
-                                <div>
-                                  <div className="fw-semibold">{doc.name}</div>
-                                  <small className="text-muted">{doc.type} • {doc.size}</small>
-                                  {doc.verified !== undefined && (
-                                    <div>
-                                      <span className={`badge ${doc.verified ? 'bg-success' : 'bg-warning'} mt-1`}>
-                                        {doc.verified ? 'Verified' : 'Pending Verification'}
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                              {/* removed */}
-                            </div>
-                          </div>
-                        ))}
+                    <h5 className="card-title mb-3"><i className="bi bi-info-circle text-warning me-2"></i>Status & Remarks</h5>
+                    <div className="row row-cols-1 row-cols-md-3 g-3 align-items-start">
+                      <div className="col">
+                        <div className="profile-label">Current Status</div>
+                        <div className="profile-value">
+                          <span className={`status-badge ${getStatusBadgeClass(application.status)}`}>{application.status}</span>
+                        </div>
                       </div>
-                    ) : (
-                      <p className="text-muted">No documents uploaded</p>
-                    )}
+                      <div className="col">
+                        <div className="profile-label">Applied Date</div>
+                        <div className="profile-value">{application.appliedDate}</div>
+                      </div>
+                      <div className="col">
+                        <div className="profile-label">Remarks</div>
+                        <div className={`profile-value ${application.status.toLowerCase() === 'rejected' ? 'text-danger' : 'text-muted'}`}>{application.remarks || 'No remarks available'}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -239,16 +230,16 @@ const ApplicationDetails = () => {
             {/* actions */}
             <div className="row">
               <div className="col-12">
-                <div className="card card-custom">
+                <div className="card card-custom details-actions-card">
                   <div className="card-body">
-                    <div className="d-flex flex-wrap gap-3 justify-content-center">
-                      <button className="btn btn-outline-primary" onClick={() => navigate('.', { state: { page: 'apply' } })}>
+                    <div className="details-actions">
+                      <button className="btn btn-outline-primary details-action" onClick={() => navigate('.', { state: { page: 'apply' } })}>
                         <i className="bi bi-telephone me-2"></i>Contact Support
                       </button>
-                      <button className="btn btn-outline-info" onClick={() => navigate('.', { state: { page: 'apply' } })}>
+                      <button className="btn btn-outline-info details-action" onClick={() => navigate('.', { state: { page: 'apply' } })}>
                         <i className="bi bi-chat-dots me-2"></i>Live Chat
                       </button>
-                      <button className="btn btn-outline-secondary" onClick={() => navigate('.', { state: { page: 'apply' } })}>
+                      <button className="btn btn-outline-secondary details-action" onClick={() => navigate('.', { state: { page: 'apply' } })}>
                         <i className="bi bi-printer me-2"></i>Print Application
                       </button>
                     </div>

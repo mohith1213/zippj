@@ -22,16 +22,18 @@ const CommentsSection = ({
         />
       </div>
       <div className="action-buttons">
-        <button 
-          className="btn-approve"
+        <button
+          className="btn btn-custom btn-custom--green"
           onClick={handleApprove}
         >
+          <i className="bi bi-check-circle"></i>
           Approve & Send to Checker
         </button>
-        <button 
-          className="btn-reject"
+        <button
+          className="btn btn-custom btn-custom--red"
           onClick={handleReject}
         >
+          <i className="bi bi-x-circle"></i>
           Reject Application
         </button>
       </div>

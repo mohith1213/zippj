@@ -1,5 +1,6 @@
 // App.js
 import React, { useState, useEffect } from 'react';
+import ModalPopup from '../components/ModalPopup';
 import { useNavigate } from 'react-router-dom';
 
 import Header from './components/Header/Header';
@@ -20,6 +21,8 @@ const UseCase4 = () => {
   const [applicationFilter, setApplicationFilter] = useState('all');
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [logoutModal, setLogoutModal] = useState(false);
+  const [infoModal, setInfoModal] = useState({ show: false, title: '', message: '' });
 
   useEffect(() => {
     setApplications(staticApplications);
@@ -29,7 +32,7 @@ const UseCase4 = () => {
   // Approve application
   const handleApprove = () => {
     if (!selectedApplication || !reviewComments.trim()) {
-      alert('Please add review comments before approving');
+      setInfoModal({ show: true, title: 'Approve Application', message: 'Please add review comments before approving.' });
       return;
     }
 
@@ -56,13 +59,13 @@ const UseCase4 = () => {
     setReviewComments('');
     setActiveTab('personal');
     setCurrentPage('dashboard');
-    alert('Application sent to checker successfully');
+    setInfoModal({ show: true, title: 'Sent to Checker', message: 'Application sent to checker successfully.' });
   };
 
   // Reject application
   const handleReject = () => {
     if (!selectedApplication || !reviewComments.trim()) {
-      alert('Please add review comments before rejecting');
+      setInfoModal({ show: true, title: 'Reject Application', message: 'Please add review comments before rejecting.' });
       return;
     }
 
@@ -87,7 +90,7 @@ const UseCase4 = () => {
     setReviewComments('');
     setActiveTab('personal');
     setCurrentPage('dashboard');
-    alert('Application rejected successfully');
+    setInfoModal({ show: true, title: 'Rejected', message: 'Application rejected successfully.' });
   };
 
   // Notifications
@@ -103,12 +106,8 @@ const UseCase4 = () => {
     setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
   };
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      alert('Logging out...');
-      navigate('/login');
-    }
-  };
+  const handleLogout = () => setLogoutModal(true);
+  const confirmLogout = () => { navigate('/login'); };
 
   // Filtered applications
   const filteredApplications =
@@ -126,6 +125,7 @@ const UseCase4 = () => {
   };
 
   return (
+    <>
     <div className="app">
       {/* Header */}
       <Header
@@ -199,6 +199,24 @@ const UseCase4 = () => {
         </div>
       </div>
     </div>
+    {/* Modals */}
+    <ModalPopup
+      show={logoutModal}
+      title="Logout"
+      message="Are you sure you want to logout?"
+      onClose={() => setLogoutModal(false)}
+      onConfirm={confirmLogout}
+      confirmText="Logout"
+      cancelText="Cancel"
+      confirmVariant="danger"
+    />
+    <ModalPopup
+      show={infoModal.show}
+      title={infoModal.title}
+      message={infoModal.message}
+      onClose={() => setInfoModal({ ...infoModal, show: false })}
+    />
+    </>
   );
 };
 

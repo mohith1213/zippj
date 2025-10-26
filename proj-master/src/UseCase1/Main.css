@@ -41,4 +41,21 @@ body {
 .App {
   width: 100%;
   overflow-x: hidden;
-} */
+}
+
+/* Primary CTA button (UseCase1 theme) */
+.App .btn-primary-custom {
+  background: linear-gradient(135deg, #0473EA 0%, #0368D4 100%);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+
+.App .btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(4, 115, 234, 0.35);
+  color: #ffffff;
+}

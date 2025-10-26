@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import ModalPopup from '../../components/ModalPopup';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
  
 
 const Navbar = ({ user, onMenu }) => {
@@ -7,14 +8,15 @@ const Navbar = ({ user, onMenu }) => {
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('loanApplications');
-      localStorage.removeItem('userProfile');
-      alert('Logged out successfully!');
-      navigate('/login', { replace: true });
-    }
+  const [logoutModal, setLogoutModal] = useState(false);
+  const handleLogout = () => setLogoutModal(true);
+  const confirmLogout = () => {
+    localStorage.removeItem('loanApplications');
+    localStorage.removeItem('userProfile');
+    setLogoutModal(false);
+    navigate('/login', { replace: true });
   };
 
   // outside
@@ -31,12 +33,66 @@ const Navbar = ({ user, onMenu }) => {
   // route
   useEffect(() => {
     setShowDropdown(false);
+    // recompute UC2 unread notifications on route change
+    try {
+      const raw = localStorage.getItem('uc2_notifications');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          setUnreadCount(list.filter(n => !n.read).length);
+          return;
+        }
+      }
+      setUnreadCount(0);
+    } catch {
+      setUnreadCount(0);
+    }
   }, [location]);
+
+  // initial compute on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('uc2_notifications');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          setUnreadCount(list.filter(n => !n.read).length);
+          return;
+        }
+      }
+      setUnreadCount(0);
+    } catch {
+      setUnreadCount(0);
+    }
+  }, []);
+
+  // live updates when notifications are modified
+  useEffect(() => {
+    const handler = () => {
+      try {
+        const raw = localStorage.getItem('uc2_notifications');
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list)) {
+            setUnreadCount(list.filter(n => !n.read).length);
+            return;
+          }
+        }
+        setUnreadCount(0);
+      } catch {
+        setUnreadCount(0);
+      }
+    };
+    window.addEventListener('uc2-notifications-updated', handler);
+    return () => window.removeEventListener('uc2-notifications-updated', handler);
+  }, []);
 
   return (
     <>
       <style>{`
-        .usecase2 .navbar-custom { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-bottom: 1px solid #eaeaea; padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; z-index: 1050; }
+        .usecase2 .navbar-custom { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-bottom: 1px solid #eaeaea; padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; z-index: 1050; height: 70px; }
+        .usecase2 .navbar-custom .container-fluid { padding-left: 8px; padding-right: 16px; }
+        .usecase2 .navbar-custom .navbar-brand { padding: 0; margin: 0; }
         .usecase2 .navbar-custom .navbar-brand { font-size: 1.5rem; font-weight: bold; color: #0d6efd !important; text-decoration: none; border: none; background: none; }
         .usecase2 .navbar-custom .navbar-brand:hover { color: #0b5ed7 !important; }
         .usecase2 .navbar-custom .btn-primary { background: #0d6efd; border-color: #0d6efd; }
@@ -49,6 +105,15 @@ const Navbar = ({ user, onMenu }) => {
         .usecase2 .dropdown-item.text-danger:hover { background: #f8d7da; color: #842029 !important; }
         .usecase2 .dropdown-item-text { padding: 15px 20px; margin: 0; }
         .usecase2 .navbar-custom .fw-semibold { color: #0d6efd; }
+        /* Notifications bell */
+        .usecase2 .notif-btn { position: relative; color: #0d6efd; transition: transform .2s ease, color .2s ease; }
+        .usecase2 .notif-btn .bell { display: inline-block; transition: transform .2s ease; }
+        .usecase2 .notif-btn:hover { color: #0b5ed7; transform: translateY(-1px); }
+        .usecase2 .notif-btn:hover .bell { transform: scale(1.08); }
+        .usecase2 .notif-badge { position: absolute; top: 4px; right: 4px; width: 9px; height: 9px; border-radius: 50%; background: #dc3545; box-shadow: 0 0 0 2px #fff; }
+        /* Optional subtle pulse */
+        .usecase2 .notif-badge::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 rgba(220,53,69,.5); animation: uc2-pulse 1.8s infinite; }
+        @keyframes uc2-pulse { 0% { box-shadow: 0 0 0 0 rgba(220,53,69,.5); } 70% { box-shadow: 0 0 0 6px rgba(220,53,69,0); } 100% { box-shadow: 0 0 0 0 rgba(220,53,69,0); } }
         /* burger */
         .usecase2 .menu-btn { display: none; }
         @media (max-width: 768px) { .usecase2 .dropdown-menu { min-width: 220px; right: 0 !important; left: auto !important; } }
@@ -65,9 +130,9 @@ const Navbar = ({ user, onMenu }) => {
           >
             <i className="bi bi-list fs-3"></i>
           </button>
-          <button
-            className="navbar-brand p-0 border-0 bg-transparent"
-            onClick={() => navigate('/customer-dashboard/dashboard')}
+          <Link
+            to="/customer-dashboard/dashboard"
+            className="navbar-brand d-flex align-items-center p-0"
             aria-label="Home"
           >
             <img
@@ -77,17 +142,20 @@ const Navbar = ({ user, onMenu }) => {
               height="55"
               style={{ objectFit: 'contain', display: 'block' }}
             />
-          </button>
+          </Link>
           
           <div className="navbar-nav ms-auto">
             <div className="d-flex align-items-center gap-3">
               <button
-                className="btn bg-transparent border-0 position-relative"
+                className="btn bg-transparent border-0 position-relative notif-btn"
                 aria-label="Notifications"
                 onClick={() => navigate('/customer-dashboard/notifications')}
-                title="Notifications"
+                title={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : 'Notifications'}
               >
-                <i className="bi bi-bell fs-5"></i>
+                <i className="bi bi-bell fs-5 bell"></i>
+                {unreadCount > 0 && (
+                  <span className="notif-badge" aria-hidden="true"></span>
+                )}
               </button>
               <div className="dropdown" ref={dropdownRef}>
                 <button 
@@ -130,6 +198,16 @@ const Navbar = ({ user, onMenu }) => {
           </div>
         </div>
       </nav>
+      <ModalPopup
+        show={logoutModal}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        onClose={() => setLogoutModal(false)}
+        onConfirm={confirmLogout}
+        confirmText="Logout"
+        cancelText="Cancel"
+        confirmVariant="danger"
+      />
     </>
   );
 };

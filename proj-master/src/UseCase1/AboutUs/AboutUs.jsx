@@ -57,7 +57,7 @@ function AboutUs() {
                 committed to creating lasting value for customers, employees,
                 and communities.
               </p>
-              <button className="btn btn-primary mt-3">Learn More</button>
+              <button className="btn btn-primary-custom mt-3">Learn More</button>
             </div>
             <div className="col-md-6">
               {/* ✅ Replaced placeholder with your local Our_Story image */}

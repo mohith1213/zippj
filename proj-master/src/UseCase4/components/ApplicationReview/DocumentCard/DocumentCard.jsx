@@ -1,8 +1,10 @@
 // components/ApplicationReview/DocumentCard/DocumentCard.js
-import React from 'react';
+import React, { useState } from 'react';
+import ModalPopup from '../../../../components/ModalPopup';
 import './DocumentCard.css';
 
 const DocumentCard = ({ document, documentType, docIndex }) => {
+  const [infoModal, setInfoModal] = useState({ show: false, title: '', message: '' });
   const getDocumentIcon = (type) => {
     const icons = {
       identity: '🆔',
@@ -18,16 +20,17 @@ const DocumentCard = ({ document, documentType, docIndex }) => {
   };
 
   const handleDocumentClick = (doc) => {
-    alert(`Opening document: ${doc.name}\nFile: ${doc.file}`);
+    setInfoModal({ show: true, title: 'Open Document', message: `Opening document: ${doc.name}\nFile: ${doc.file}` });
     // In real app, this would open the actual document
   };
 
   const toggleVerification = () => {
     // This would be connected to the parent component's state
-    alert(`Toggling verification for ${document.name}`);
+    setInfoModal({ show: true, title: 'Verification', message: `Toggling verification for ${document.name}` });
   };
 
   return (
+    <>
     <div className={`document-card ${document.verified ? 'verified' : 'pending'}`}>
       <div className="document-icon">
         {getDocumentIcon(document.type)}
@@ -51,6 +54,13 @@ const DocumentCard = ({ document, documentType, docIndex }) => {
         </button>
       </div>
     </div>
+    <ModalPopup
+      show={infoModal.show}
+      title={infoModal.title}
+      message={infoModal.message}
+      onClose={() => setInfoModal({ ...infoModal, show: false })}
+    />
+    </>
   );
 };
 

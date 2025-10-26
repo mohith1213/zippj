@@ -121,7 +121,7 @@ export default function LoanApplication() {
         ))}
       </div>
       <div className="submit-area">
-        <button className="btn btn-primary" type="button" onClick={() => alert("Application submitted!")}>Submit Application</button>
+        <button className="btn btn-primary-custom" type="button" onClick={() => alert("Application submitted!")}>Submit Application</button>
       </div>
     </div>
   );
@@ -216,7 +216,7 @@ export default function LoanApplication() {
         <div className="nav-actions">
           <button className="btn btn-outline-primary" type="button" onClick={prevStep} disabled={step === 1}>Back</button>
           {step < 6 ? (
-            <button className="btn btn-primary" type="button" onClick={nextStep}>Next</button>
+            <button className="btn btn-primary-custom" type="button" onClick={nextStep}>Next</button>
           ) : (
             <button className="btn btn-success" type="button" onClick={() => alert("Submitted successfully!")}>Finish</button>
           )}

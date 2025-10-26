@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScImage2 from '../Images/Signup_image.jpg';
 import '../SignUp/SignUp.css';
+import ModalPopup from '../../components/ModalPopup';
 
 function SignupPage() {
   const navigate = useNavigate();
+  const [modal, setModal] = useState({ show: false, title: '', message: '' });
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    alert('Signup form submitted!');
+    setModal({ show: true, title: 'Signup', message: 'Signup form submitted!' });
   };
 
   const handleLoginClick = () => {
@@ -20,6 +22,7 @@ function SignupPage() {
   };
 
   return (
+    <>
     <div className="auth-page signup-page">
       <div className="auth-container">
         <div className="auth-form-section">
@@ -112,6 +115,13 @@ function SignupPage() {
         </div>
       </div>
     </div>
+    <ModalPopup
+      show={modal.show}
+      title={modal.title}
+      message={modal.message}
+      onClose={() => setModal({ ...modal, show: false })}
+    />
+    </>
   );
 }
 

@@ -199,7 +199,7 @@ function HomePage() {
                   <h4>{step.title}</h4>
                   <p>{step.desc}</p>
                   {step.action && (
-                    <button className="btn btn-primary mt-3 px-4 py-2">
+                    <button className="btn btn-primary-custom mt-3 px-4 py-2">
                       Apply Now
                     </button>
                   )}
