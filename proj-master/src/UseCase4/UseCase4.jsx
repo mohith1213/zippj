@@ -1,6 +1,6 @@
 // App.js
 import React, { useState, useEffect } from 'react';
-import ModalPopup from '../components/ModalPopup';
+import AllPopup from '../components/AllPopup';
 import { useNavigate } from 'react-router-dom';
 
 import Header from './components/Header/Header';
@@ -200,7 +200,7 @@ const UseCase4 = () => {
       </div>
     </div>
     {/* Modals */}
-    <ModalPopup
+    <AllPopup
       show={logoutModal}
       title="Logout"
       message="Are you sure you want to logout?"
@@ -210,7 +210,7 @@ const UseCase4 = () => {
       cancelText="Cancel"
       confirmVariant="danger"
     />
-    <ModalPopup
+    <AllPopup
       show={infoModal.show}
       title={infoModal.title}
       message={infoModal.message}

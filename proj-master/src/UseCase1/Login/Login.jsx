@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScImage1 from '../Images/Sc-Image1.jpeg';
 import './Login.css';
-import ModalPopup from '../../components/ModalPopup';
+import AllPopup from '../../components/AllPopup';
 
 function Login() {
   const navigate = useNavigate();
@@ -156,7 +156,7 @@ function Login() {
           />
         </div>
       </div>
-      <ModalPopup
+      <AllPopup
         show={modal.show}
         title={modal.title}
         message={modal.message}

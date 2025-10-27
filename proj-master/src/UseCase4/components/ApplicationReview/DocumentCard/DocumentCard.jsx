@@ -1,6 +1,6 @@
 // components/ApplicationReview/DocumentCard/DocumentCard.js
 import React, { useState } from 'react';
-import ModalPopup from '../../../../components/ModalPopup';
+import AllPopup from '../../../../components/AllPopup';
 import './DocumentCard.css';
 
 const DocumentCard = ({ document, documentType, docIndex }) => {
@@ -54,7 +54,7 @@ const DocumentCard = ({ document, documentType, docIndex }) => {
         </button>
       </div>
     </div>
-    <ModalPopup
+    <AllPopup
       show={infoModal.show}
       title={infoModal.title}
       message={infoModal.message}

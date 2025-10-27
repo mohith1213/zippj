@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ScImage2 from '../Images/Signup_image.jpg';
 import '../SignUp/SignUp.css';
-import ModalPopup from '../../components/ModalPopup';
+import AllPopup from '../../components/AllPopup';
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -115,7 +115,7 @@ function SignupPage() {
         </div>
       </div>
     </div>
-    <ModalPopup
+    <AllPopup
       show={modal.show}
       title={modal.title}
       message={modal.message}

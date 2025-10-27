@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 
-export default function ModalPopup({
+export default function AllPopup({
   show,
   title,
   message,

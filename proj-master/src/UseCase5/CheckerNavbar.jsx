@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import ModalPopup from "../components/ModalPopup";
+import AllPopup from "../components/AllPopup";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./CheckerNavbar.css";
 
@@ -141,7 +141,7 @@ export default function CheckerNavbar() {
         </div>
       </div>
     </nav>
-    <ModalPopup
+    <AllPopup
       show={logoutModal}
       title="Logout"
       message="Are you sure you want to logout?"

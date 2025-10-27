@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ModalPopup from "../components/ModalPopup";
+import AllPopup from "../components/AllPopup";
 import "./UnifiedLoanApplication.css";
 
 // Move Field component OUTSIDE the main component
@@ -735,7 +735,7 @@ export default function UnifiedLoanApplication({ onSubmit, initialData }) {
           </div>
         </form>
       </div>
-        <ModalPopup
+        <AllPopup
           show={infoModal.show}
           title={infoModal.title}
           message={infoModal.message}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import ModalPopup from "../components/ModalPopup";
+import AllPopup from "../components/AllPopup";
 
 export default function CheckerProfileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function CheckerProfileMenu() {
           onClick={() => setIsOpen(false)}
         ></div>
       )}
-      <ModalPopup
+      <AllPopup
         show={logoutModal}
         title="Logout"
         message="Are you sure you want to logout?"

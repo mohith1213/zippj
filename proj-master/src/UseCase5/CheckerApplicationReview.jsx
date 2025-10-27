@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ModalPopup from "../components/ModalPopup";
+import AllPopup from "../components/AllPopup";
 import { useParams, Link, useLocation } from "react-router-dom";
 import applicationsData from "./data/applications.json";
 import "./CheckerApplicationReview.css";

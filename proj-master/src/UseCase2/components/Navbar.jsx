@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ModalPopup from '../../components/ModalPopup';
+import AllPopup from '../../components/AllPopup';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
  
 
@@ -198,7 +198,7 @@ const Navbar = ({ user, onMenu }) => {
           </div>
         </div>
       </nav>
-      <ModalPopup
+      <AllPopup
         show={logoutModal}
         title="Logout"
         message="Are you sure you want to logout?"
