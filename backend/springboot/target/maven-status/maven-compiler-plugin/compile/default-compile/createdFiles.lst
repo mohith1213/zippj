@@ -1,0 +1,5 @@
+com\example\demo\controller\HelloController.class
+com\example\demo\DemoApplication.class
+com\example\demo\repository\NoteRepository.class
+com\example\demo\entity\Note.class
+com\example\demo\controller\NoteController.class
