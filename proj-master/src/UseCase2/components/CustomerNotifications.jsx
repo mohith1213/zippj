@@ -1,80 +1,35 @@
 import React, { useEffect, useState } from "react";
 import "./CustomerNotifications.css";
+import { listUserNotifications } from "../../api/notifications";
 
 export default function CustomerNotifications() {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // UC2-local seed data (used only if no prior UC2 notifications exist)
-  const seedUc2Notifications = [
-    {
-      id: 1,
-      type: "status_update",
-      title: "Application Status Updated",
-      message:
-        "Your application LA2025001 status changed to Pending. Our team is reviewing your documents.",
-      timestamp: "2025-10-15 10:10 AM",
-      applicationId: "LA2025001",
-      read: false,
-    },
-    {
-      id: 2,
-      type: "request_docs",
-      title: "Additional Documents Requested",
-      message:
-        "Please upload the latest 3 months salary slips for application LA2025002.",
-      timestamp: "2025-10-14 05:45 PM",
-      applicationId: "LA2025002",
-      read: false,
-    },
-    {
-      id: 3,
-      type: "decision",
-      title: "Application Decision",
-      message:
-        "Your application LA2025003 is approved. Our team will reach out for next steps.",
-      timestamp: "2025-10-14 03:20 PM",
-      applicationId: "LA2025003",
-      read: false,
-    },
-  ];
-
   useEffect(() => {
-    const t = setTimeout(() => {
-      try {
-        const key = "uc2_notifications";
-        const raw = localStorage.getItem(key);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            setNotifications(parsed);
-            setIsLoading(false);
-            return;
-          }
-        }
-        // seed UC2-only data if none exists
-        localStorage.setItem(key, JSON.stringify(seedUc2Notifications));
-        setNotifications(seedUc2Notifications);
-      } catch {
-        setNotifications(seedUc2Notifications);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300);
-    return () => clearTimeout(t);
+    const auRaw = localStorage.getItem('authUser');
+    const au = auRaw ? JSON.parse(auRaw) : null;
+    const uid = au?.id;
+    if (!uid) { setIsLoading(false); return; }
+    listUserNotifications(uid)
+      .then(list => {
+        const mapped = (list || []).map(n => ({
+          id: n.id,
+          type: (n.type || '').toLowerCase().includes('rejected') ? 'decision' : (n.type || '').toLowerCase().includes('approved') ? 'decision' : 'status_update',
+          title: n.type ? n.type.replace(/_/g,' ') : 'Notification',
+          message: n.message,
+          timestamp: n.createdAt,
+          applicationId: '',
+          read: n.readFlag
+        }));
+        setNotifications(mapped);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const markAllRead = () => {
-    try {
-      const key = "uc2_notifications";
-      const updated = (notifications || []).map(n => ({ ...n, read: true }));
-      setNotifications(updated);
-      localStorage.setItem(key, JSON.stringify(updated));
-      // notify navbar to recompute unread badge immediately
-      window.dispatchEvent(new Event('uc2-notifications-updated'));
-    } catch {
-      // ignore errors silently
-    }
+    const updated = (notifications || []).map(n => ({ ...n, read: true }));
+    setNotifications(updated);
   };
 
   const getTypeIcon = (type) => {

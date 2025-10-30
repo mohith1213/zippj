@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import applicationsData from "./data/applications.json";
+import { listCheckerQueue } from "../api/loans";
 import "./CheckerDashboard.css";
 
 export default function CheckerDashboard() {
@@ -11,88 +11,21 @@ export default function CheckerDashboard() {
   const [loanTypeFilter, setLoanTypeFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data for applications
-  const mockApplications = [
-    {
-      id: "LA2025001",
-      customerName: "Rajesh Kumar Sharma",
-      email: "rajesh.sharma@email.com",
-      phone: "+91 9876543210",
-      loanType: "Personal Loan",
-      loanAmount: 500000,
-      status: "pending",
-      applicationDate: "2025-01-15",
-      cibilScore: 750,
-      age: 40
-    },
-    {
-      id: "LA2025002",
-      customerName: "Priya Singh",
-      email: "priya.singh@email.com",
-      phone: "+91 9876543211",
-      loanType: "Home Loan",
-      loanAmount: 2500000,
-      status: "pending",
-      applicationDate: "2025-01-14",
-      cibilScore: 720,
-      age: 35
-    },
-    {
-      id: "LA2025003",
-      customerName: "Amit Patel",
-      email: "amit.patel@email.com",
-      phone: "+91 9876543212",
-      loanType: "Vehicle Loan",
-      loanAmount: 800000,
-      status: "approved",
-      applicationDate: "2025-01-13",
-      cibilScore: 780,
-      age: 28
-    },
-    {
-      id: "LA2025004",
-      customerName: "Sunita Reddy",
-      email: "sunita.reddy@email.com",
-      phone: "+91 9876543213",
-      loanType: "Personal Loan",
-      loanAmount: 300000,
-      status: "rejected",
-      applicationDate: "2025-01-12",
-      cibilScore: 650,
-      age: 45
-    }
-  ];
-
   useEffect(() => {
-    // Load applications from localStorage or fallback to JSON data
-    setTimeout(() => {
-      const storedApplications = localStorage.getItem('checkerApplications');
-      let apps;
-      
-      if (storedApplications) {
-        apps = JSON.parse(storedApplications).map(app => ({
-          id: app.id,
-          customerName: app.customerName,
-          email: app.email, // may be undefined in some entries
-          loanType: app.loanType,
-          loanAmount: app.loanAmount,
-          status: app.status
+    listCheckerQueue()
+      .then(list => {
+        const apps = (list || []).map(it => ({
+          id: it.applicationNumber || it.id,
+          customerName: '',
+          email: '',
+          loanType: it.loanType,
+          loanAmount: Number(it.amount || 0),
+          status: String(it.status || 'Under Review').toLowerCase().includes('approved') ? 'approved' : (String(it.status||'').toLowerCase().includes('rejected') ? 'rejected' : 'pending')
         }));
-      } else {
-        apps = applicationsData.applications.map(app => ({
-          id: app.id,
-          customerName: app.customerName,
-          email: app.email,
-          loanType: app.loanType,
-          loanAmount: app.loanAmount,
-          status: app.status
-        }));
-      }
-      
-      setApplications(apps);
-      setFilteredApplications(apps);
-      setIsLoading(false);
-    }, 1000);
+        setApplications(apps);
+        setFilteredApplications(apps);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {

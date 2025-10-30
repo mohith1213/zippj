@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login as apiLogin } from '../../api/auth';
 import ScImage1 from '../Images/Sc-Image1.jpeg';
 import './Login.css';
 import AllPopup from '../../components/AllPopup';
@@ -13,11 +14,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const [modal, setModal] = useState({ show: false, title: '', message: '' });
 
-  // ====== Static password for demo ======
-  const STATIC_PASSWORD = '1234';
-
   // ====== Handle Form Submit ======
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     // 🔸 Basic Validation
@@ -26,28 +24,30 @@ function Login() {
       return;
     }
 
-    // 🔸 Password Check
-    if (password !== STATIC_PASSWORD) {
-      setModal({ show: true, title: 'Incorrect Password', message: 'The password you entered is incorrect. Please try again.' });
-      return;
-    }
+    try {
+      // Use username field as email for API login
+      const resp = await apiLogin({ email: username.trim(), password: password.trim() });
+      const user = resp?.user;
+      if (!user || !user.id) {
+        throw new Error('Invalid response from server');
+      }
+      // Persist authenticated user minimally
+      localStorage.setItem('authUser', JSON.stringify(user));
 
-    // 🔸 Navigate Based on Role
-    switch (role) {
-      case 'customer':
+      // Route based on backend role
+      const userRole = String(user.role || '').toUpperCase();
+      if (userRole === 'CUSTOMER') {
         navigate('/customer-dashboard');
-        break;
-
-      case 'maker':
+      } else if (userRole === 'MAKER') {
         navigate('/maker-dashboard');
-        break;
-
-      case 'checker':
+      } else if (userRole === 'CHECKER') {
         navigate('/checker-dashboard');
-        break;
-
-      default:
+      } else {
         navigate('/');
+      }
+    } catch (err) {
+      const msg = err?.response?.data?.message || err?.message || 'Login failed';
+      setModal({ show: true, title: 'Login Error', message: msg });
     }
   };
 

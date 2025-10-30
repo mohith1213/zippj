@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AllPopup from "../components/AllPopup";
 import { useParams, Link, useLocation } from "react-router-dom";
-import applicationsData from "./data/applications.json";
+import { getApplicationDetails, checkerApprove, checkerReject } from "../api/loans";
 import "./CheckerApplicationReview.css";
 
 export default function CheckerApplicationReview() {
@@ -19,17 +19,63 @@ export default function CheckerApplicationReview() {
   const [infoModal, setInfoModal] = useState({ show: false, title: '', message: '' });
 
   useEffect(() => {
-    // Load application data from localStorage or fallback to JSON data
-    setTimeout(() => {
-      const storedApplications = localStorage.getItem('checkerApplications');
-      let applications = storedApplications ? JSON.parse(storedApplications) : applicationsData.applications;
-      
-      const application = applications.find(app => app.id === id);
-      if (application) {
-        setApplicationData(application);
-      }
-      setIsLoading(false);
-    }, 1000);
+    setIsLoading(true);
+    getApplicationDetails(id)
+      .then(detail => {
+        if (!detail) { setIsLoading(false); return; }
+        // Map backend LoanDetailDto to existing UI-friendly structure
+        const mapped = {
+          id: detail.applicationNumber || String(detail.id || id),
+          status: (String(detail.status||'').toLowerCase().includes('approved') ? 'approved' : (String(detail.status||'').toLowerCase().includes('rejected') ? 'rejected' : 'pending')),
+          phone: detail.phone || '',
+          email: '',
+          customerName: '',
+          personalDetails: {
+            dateOfBirth: '',
+            gender: '',
+            maritalStatus: '',
+            fatherName: '',
+            highestQualification: '',
+            aadharNumber: '',
+            panNumber: '',
+            passportNumber: '',
+            homeAddress: detail.address || ''
+          },
+          employmentDetails: {
+            occupationType: detail.occupationType || '',
+            employer: detail.employer || detail.businessName || '',
+            designation: '',
+            totalWorkExperience: '',
+            officeAddress: ''
+          },
+          loanDetails: {
+            loanType: detail.loanType,
+            loanAmount: Number(detail.amount || 0),
+            loanDuration: `${detail.tenureMonths || 0} months`,
+            cibilScore: 720
+          },
+          existingLoanDetails: {
+            loanType: '',
+            lender: '',
+            outstandingAmount: Number(detail.existingLoanAmount || 0),
+            emi: Number(detail.existingLoanEmi || 0),
+            tenureRemaining: ''
+          },
+          makerComments: detail.makerRemarks ? [{ id: 1, maker: 'Maker', timestamp: '', type: 'info', comment: detail.makerRemarks }] : [],
+          documents: {
+            photograph: { name: 'Photograph', uploaded: false, url: '#', type: 'image' },
+            idProof: { name: 'ID Proof', uploaded: false, url: '#', type: 'pdf' },
+            cibilReport: { name: 'CIBIL Report', uploaded: false, url: '#', type: 'pdf' },
+            paySlip: { name: 'Payslip', uploaded: !!detail.payslip, url: '#', type: 'pdf' },
+            employmentProof: { name: 'Employment Proof', uploaded: !!detail.employmentProof, url: '#', type: 'pdf' },
+            incomeProof: { name: 'ITR', uploaded: !!detail.itrDoc, url: '#', type: 'pdf' },
+            homeEc: { name: 'Encumbrance Certificate', uploaded: !!detail.encumbranceCertificate, url: '#', type: 'pdf' },
+            vehicleInvoice: { name: 'Vehicle Invoice', uploaded: !!detail.vehicleInvoice, url: '#', type: 'pdf' }
+          }
+        };
+        setApplicationData(mapped);
+      })
+      .finally(() => setIsLoading(false));
   }, [id]);
 
   if (isLoading) {
@@ -88,40 +134,31 @@ export default function CheckerApplicationReview() {
     setShowConfirmation(true);
   };
 
-  const confirmDecision = () => {
+  const confirmDecision = async () => {
     if (confirmationType === "reject" && !rejectionComment.trim()) {
       setCommentError("Comment is mandatory for rejection");
       return;
     }
-
-    const action = confirmationType === "approve" ? "approved" : "rejected";
-    const message = confirmationType === "approve"
-      ? `Application has been approved successfully!${approvalComment ? ` Comment: ${approvalComment}` : ""}`
-      : `Application has been rejected. Reason: ${rejectionComment}`;
-
-    // Update application status in localStorage
-    const storedApplications = localStorage.getItem('checkerApplications');
-    let applications = storedApplications ? JSON.parse(storedApplications) : applicationsData.applications;
-    
-    const updatedApplications = applications.map(app => 
-      app.id === id ? { ...app, status: action } : app
-    );
-    
-    localStorage.setItem('checkerApplications', JSON.stringify(updatedApplications));
-    
-    // Update local state
-    setApplicationData(prev => ({ ...prev, status: action }));
-
-    setInfoModal({ show: true, title: confirmationType === "approve" ? "Approved" : "Rejected", message });
-    setShowConfirmation(false);
-    setRejectionComment("");
-    setApprovalComment("");
-    setCommentError("");
-    
-    // Redirect back to dashboard after a short delay
-    setTimeout(() => {
-      window.location.href = '../dashboard';
-    }, 1500);
+    try {
+      const au = JSON.parse(localStorage.getItem('authUser') || 'null');
+      const userId = au?.id;
+      if (confirmationType === 'approve') {
+        await checkerApprove(id, userId, approvalComment);
+        setApplicationData(prev => ({ ...prev, status: 'approved' }));
+        setInfoModal({ show: true, title: 'Approved', message: `Application has been approved successfully!${approvalComment ? ` Comment: ${approvalComment}` : ''}` });
+      } else {
+        await checkerReject(id, userId, rejectionComment);
+        setApplicationData(prev => ({ ...prev, status: 'rejected' }));
+        setInfoModal({ show: true, title: 'Rejected', message: `Application has been rejected. Reason: ${rejectionComment}` });
+      }
+      setShowConfirmation(false);
+      setRejectionComment("");
+      setApprovalComment("");
+      setCommentError("");
+      setTimeout(() => { window.location.href = '../dashboard'; }, 1200);
+    } catch (e) {
+      setInfoModal({ show: true, title: 'Error', message: 'Failed to submit decision. Please try again.' });
+    }
   };
 
   const cancelDecision = () => {

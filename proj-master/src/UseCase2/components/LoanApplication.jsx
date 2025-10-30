@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import UnifiedLoanApplication from '../../UseCase3/UnifiedLoanApplication';
+import { applyLoan, resubmitLoan } from '../../api/loans';
 
 function LoanApplication({ addApplication, updateApplication }) {
   const navigate = useNavigate();
@@ -44,16 +45,59 @@ function LoanApplication({ addApplication, updateApplication }) {
       }
     : undefined;
 
-  const handleSubmit = (app) => {
-    if (initialApp?.id && typeof updateApplication === 'function') {
-      const updated = { ...initialApp, ...app, id: initialApp.id, status: 'Pending' };
-      updateApplication(updated);
-    } else if (typeof addApplication === 'function') {
-      addApplication(app);
+  const handleSubmit = async (app) => {
+    const auRaw = localStorage.getItem('authUser');
+    const au = auRaw ? JSON.parse(auRaw) : null;
+    const customerId = au?.id;
+    const occupationType = app.occupationType || '';
+    const loanType = app.loanType || '';
+    // map UI fields to backend
+    const payload = {
+      customerId,
+      phone: String(app.phone || ''),
+      address: String(app.address || ''),
+      age: app.age ? Number(app.age) : 0,
+      occupationType,
+      employer: occupationType === 'Salaried' ? String(app.employer || '') : undefined,
+      employmentProof: occupationType === 'Salaried' ? 'employment-proof' : undefined,
+      payslip: occupationType === 'Salaried' ? 'payslip' : undefined,
+      itrDoc: (occupationType === 'Salaried' || occupationType === 'Self-Employed') ? 'itr' : undefined,
+      businessName: occupationType === 'Self-Employed' ? String(app.employer || app.businessName || '') : undefined,
+      gstDoc: occupationType === 'Self-Employed' ? 'gst' : undefined,
+      bankStatements: occupationType === 'Self-Employed' ? 'bank-statements' : undefined,
+      loanType,
+      amount: app.amount ? Number(app.amount) : 0,
+      tenureMonths: app.duration ? Number(app.duration) : 0,
+      annualInterestRate: 10.0,
+      saleAgreement: loanType === 'Home Loan' ? 'sale-agreement' : undefined,
+      encumbranceCertificate: loanType === 'Home Loan' ? 'ec' : undefined,
+      vehicleInvoice: loanType === 'Vehicle Loan' ? 'invoice' : undefined,
+      vehicleQuotation: loanType === 'Vehicle Loan' ? 'quotation' : undefined,
+      hasExistingLoans: String(app.hasLoans || '').toLowerCase() === 'yes',
+      existingLoanAmount: app.outstandingAmount ? Number(app.outstandingAmount) : undefined,
+      existingLoanEmi: app.existingEmi ? Number(app.existingEmi) : undefined
+    };
+
+    try {
+      if (initialApp?.id) {
+        await resubmitLoan({ ...payload, applicationId: initialApp.id });
+        if (typeof updateApplication === 'function') {
+          updateApplication({ ...initialApp, status: 'Under Review' });
+        }
+      } else {
+        await applyLoan(payload);
+        if (typeof addApplication === 'function') {
+          addApplication({ id: 'TEMP', loanType: payload.loanType, amount: payload.amount, tenure: payload.tenureMonths, status: 'Under Review' });
+        }
+      }
+      navigate('/customer-dashboard/applications', {
+        state: { message: 'Application submitted successfully!' }
+      });
+    } catch (e) {
+      navigate('/customer-dashboard/applications', {
+        state: { message: 'Submission failed. Please try again.' }
+      });
     }
-    navigate('/customer-dashboard/applications', {
-      state: { message: 'Application submitted successfully!' }
-    });
   };
 
   return (
